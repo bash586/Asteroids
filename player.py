@@ -20,10 +20,10 @@ class Player(CircleShape):
 
     def draw(self, screen):
         pg.draw.polygon(screen, "white", self.triangle(), 2)
-    
+
     def rotate(self, dt):
         self.rotation += PLAYER_TURN_SPEED * dt
-    
+
     def update(self, dt):
         keys = pg.key.get_pressed()
         if keys[pg.K_a]:
@@ -39,7 +39,9 @@ class Player(CircleShape):
 
     def move(self, dt):
         forward = pg.Vector2(0, 1).rotate(self.rotation)
-        self.position += forward * PLAYER_SPEED * dt
+        # prevent player movement out of screen scope
+        self.position.x = min(SCREEN_WIDTH - PLAYER_RADIUS, max(PLAYER_RADIUS, self.position.x + forward.x * PLAYER_SPEED * dt))
+        self.position.y = min(SCREEN_HEIGHT - PLAYER_RADIUS, max(PLAYER_RADIUS, self.position.y + forward.y * PLAYER_SPEED * dt))
 
     def shoot(self):
         if (pg.time.get_ticks()/1000 - self.timer) >= PLAYER_SHOOT_COOLDOWN:
@@ -47,4 +49,4 @@ class Player(CircleShape):
             shot.rotation = self.rotation
             shot.velocity = pg.Vector2(0, 1).rotate(shot.rotation) * PLAYER_SHOOT_SPEED
             self.timer = pg.time.get_ticks()/1000
-            return shot 
+            return shot

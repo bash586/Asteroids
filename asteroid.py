@@ -1,6 +1,6 @@
 import random
 
-import pygame
+import pygame as pg
 
 from circleshape import CircleShape
 from constants import *
@@ -11,10 +11,12 @@ class Asteroid(CircleShape):
         super().__init__(x, y, radius)
 
     def draw(self, screen):
-        pygame.draw.circle(screen, "white", self.position, self.radius, 2)
+        pg.draw.circle(screen, "white", self.position, self.radius, 2)
 
     def update(self, dt):
         self.position += self.velocity * dt
+        # get rid of asteroids going out of screen
+        if (self._isOffScreen): self.kill()
 
     def split(self):
         self.kill()
@@ -31,3 +33,11 @@ class Asteroid(CircleShape):
 
             a1.velocity = vector1 * 1.2
             a2.velocity = vector2 * 1.2
+
+    def _isOffScreen(self)->bool:
+        return (
+            self.position.x < -ASTEROID_MAX_RADIUS -1
+            or self.position.x > SCREEN_WIDTH + ASTEROID_MAX_RADIUS +1
+            or self.position.y < -ASTEROID_MAX_RADIUS -1
+            or self.position.y > SCREEN_HEIGHT + ASTEROID_MAX_RADIUS +1
+        )

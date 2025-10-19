@@ -4,6 +4,8 @@ from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
+from giftfield import GiftField
+from gift import Gift
 from constants import *
 
 def main():
@@ -15,15 +17,19 @@ def main():
     drawable = pg.sprite.Group()
     asteroids = pg.sprite.Group()
     shots = pg.sprite.Group()
-
+    gifts = pg.sprite.Group()
+    
     Asteroid.containers = (asteroids, updatable, drawable)
     AsteroidField.containers = updatable
     Player.containers = (updatable, drawable)
     Shot.containers = (shots, updatable, drawable)
+    Gift.containers = (gifts, updatable, drawable)
+    GiftField.containers = updatable
 
     asteroid_field = AsteroidField()
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-
+    gift_field = GiftField()
+    
     dt = 0
     while True:
         for event in pg.event.get():
