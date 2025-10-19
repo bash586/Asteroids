@@ -16,7 +16,9 @@ class Asteroid(CircleShape):
     def update(self, dt):
         self.position += self.velocity * dt
         # get rid of asteroids going out of screen
-        if (self._isOffScreen): self.kill()
+        if (self._isOffScreen()):
+            self.kill()
+            print("asteroid killed")
 
     def split(self):
         self.kill()
